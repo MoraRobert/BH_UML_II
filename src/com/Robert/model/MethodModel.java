@@ -10,11 +10,19 @@ public class MethodModel extends DrawUMLProjectModel{
     private String name;
     private String returnType;
     private String accessModifier;
-    private List<ClassModel> parameters;
+    private List<String> parameters;
     private ClassModel cls;
 
     public MethodModel(int id, String name) {
         super(id, name);
+    }
+
+    public MethodModel(int id, String name, String returnType, String accessModifier, List<String> parameters, ClassModel cls) {
+        super(id, name);
+        this.returnType = returnType;
+        this.accessModifier = accessModifier;
+        this.parameters = parameters;
+        this.cls = cls;
     }
 
     public String getReturnType() {
@@ -33,11 +41,11 @@ public class MethodModel extends DrawUMLProjectModel{
         this.accessModifier = accessModifier;
     }
 
-    public List<ClassModel> getParameters() {
+    public List<String> getParameters() {
         return parameters;
     }
 
-    public void setParameters(List<ClassModel> parameters) {
+    public void setParameters(List<String> parameters) {
         this.parameters = parameters;
     }
 

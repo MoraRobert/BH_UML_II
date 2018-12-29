@@ -12,8 +12,12 @@ public class FieldModel extends DrawUMLProjectModel{
     private int isCollection; // TODO: should be boolean, but sqlite can not cope with it
 
 
-    public FieldModel(int id, String name) {
+    public FieldModel(int id, String accessModifier, String type, String name, ClassModel cls, int isCollection) {
         super(id, name);
+        this.accessModifier = accessModifier;
+        this.type = type;
+        this.cls = cls;
+        this.isCollection = isCollection;
     }
 
     public String getAccessModifier() {
