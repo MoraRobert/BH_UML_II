@@ -33,16 +33,24 @@ public class Main {
 
             for (ClassModel clsmod : classesOfTheProject) {
 
+                //we compose the UML graph of 4 elements, class name, class fields, class
+                //methods and class relations
+                //firs we retrieve the name
                 clsmod.getName();
+
                 //TODO: draw rectangle with the class' name
+                //the following lines 43-45 are just here temporarily, to put an output on the console*
                 System.out.println("===================");
                 System.out.println(clsmod.getName());
                 System.out.println("-------------------");
 
 
+                //fetching the fields of one particular class. Only class, enums and interfaces don' have fields
                 if (clsmod.getType().equals("class")) {
                     List<FieldModel> fieldsOfOneClass = myUmlDao.queryTableFieldsByClass(clsmod);
+
                     //TODO: draw rectangle with the fields of a particular class
+                    //lines 54-57 to be cleared later
                     for (FieldModel fieldmod : fieldsOfOneClass) {
                         System.out.println(fieldmod.getAccessModifier() + " " + fieldmod.getType() + " " + fieldmod.getName());
                     }
@@ -50,8 +58,12 @@ public class Main {
                 }
 
 
+                //fetching the methods
                 List<MethodModel> methodsOfOneClass = myUmlDao.queryTableMethodByClass(clsmod);
+
+
                 //TODO: draw rectangle with the methods of a particular class
+                //lines 68-78 to be cleared
                 for (MethodModel methmod : methodsOfOneClass) {
                     System.out.print(methmod.getAccessModifier() + " " + methmod.getReturnType() +
                              " " + methmod.getName() + "(");
@@ -66,9 +78,12 @@ public class Main {
                 System.out.println("===================");
 
 
+                //composing the relations
                 for (ClassModel cls : classesOfTheProject) {
-                    if (clsmod != cls) {                            //TODO: overwrite equals+hash in ClassModel
+                    if (clsmod != cls) {                            
                         List<RelationsModel> relationsOfTwoClasses = myUmlDao.queryTableRelationsForTwoClasses(clsmod, cls);
+
+                        //lines 87-91 to be cleared
                         for (RelationsModel relmod : relationsOfTwoClasses) {
                             System.out.println
                                     (relmod.getChildClass().getName() + " " + relmod.getName()+ " " + relmod.getParentClass().getName());
