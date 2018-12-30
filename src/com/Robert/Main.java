@@ -10,9 +10,6 @@ import com.Robert.model.RelationsModel;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -26,46 +23,52 @@ public class Main {
 
     public static void main(String[] args) {
 
-        try (Connection connection = DriverManager
-                .getConnection(CONNECTION_STRING);
-             Statement statement = connection.createStatement()) {
+        try (Connection connection = DriverManager.getConnection(CONNECTION_STRING)) {
 
             myUmlDao = UmlDrawDaoFactory.createJdbcDao(connection);
 
-            //myUmlDao.createTables();
+            myUmlDao.createTables();
+
             List<ClassModel> classesOfTheProject = myUmlDao.queryTableClasses();
 
-            List<String> classNames = new ArrayList<>();
-            for (ClassModel cls : classesOfTheProject) {
-                classNames.add(cls.getName());
-            }
-
-
-
             for (ClassModel clsmod : classesOfTheProject) {
+
                 clsmod.getName();
                 //TODO: draw rectangle with the class' name
                 System.out.println("===================");
                 System.out.println(clsmod.getName());
                 System.out.println("-------------------");
-                List<FieldModel> fieldsOfOneClass = myUmlDao.queryTableFieldsByClass(clsmod);
-                //TODO: draw rectangle with the fields of a particular class
-                for (FieldModel fieldmod : fieldsOfOneClass) {
-                    System.out.println(fieldmod.getAccessModifier() + " " + fieldmod.getType() + " " + fieldmod.getName());
+
+
+                if (clsmod.getType().equals("class")) {
+                    List<FieldModel> fieldsOfOneClass = myUmlDao.queryTableFieldsByClass(clsmod);
+                    //TODO: draw rectangle with the fields of a particular class
+                    for (FieldModel fieldmod : fieldsOfOneClass) {
+                        System.out.println(fieldmod.getAccessModifier() + " " + fieldmod.getType() + " " + fieldmod.getName());
+                    }
+                    System.out.println("-------------------");
                 }
-                System.out.println("-------------------");
+
+
                 List<MethodModel> methodsOfOneClass = myUmlDao.queryTableMethodByClass(clsmod);
                 //TODO: draw rectangle with the methods of a particular class
                 for (MethodModel methmod : methodsOfOneClass) {
-                    System.out.println(methmod.getAccessModifier() + " " + methmod.getReturnType() +
-                             " " + methmod.getName() + " " +
-                            "( " + Arrays.toString(methmod.getParameters().toArray()) + " )") ;
+                    System.out.print(methmod.getAccessModifier() + " " + methmod.getReturnType() +
+                             " " + methmod.getName() + "(");
+                    if (methmod.getParameters().size() == 0) System.out.println(")");
+                    else {
+                        for (int i = 0; i < methmod.getParameters().size() - 1; i++) {
+                            System.out.print(methmod.getParameters().get(i) + ", ");
+                        }
+                        System.out.println(methmod.getParameters().get(methmod.getParameters().size() - 1) + ")");
+                    }
                 }
                 System.out.println("===================");
+
+
                 for (ClassModel cls : classesOfTheProject) {
                     if (clsmod != cls) {                            //TODO: overwrite equals+hash in ClassModel
-                        List<RelationsModel> relationsOfTwoClasses =
-                            myUmlDao.queryTableRelationsForTwoClasses(clsmod, cls); //TODO: clerify parent/child
+                        List<RelationsModel> relationsOfTwoClasses = myUmlDao.queryTableRelationsForTwoClasses(clsmod, cls);
                         for (RelationsModel relmod : relationsOfTwoClasses) {
                             System.out.println
                                     (relmod.getChildClass().getName() + " " + relmod.getName()+ " " + relmod.getParentClass().getName());
@@ -73,26 +76,11 @@ public class Main {
                     }
                     //TODO: connect two classes with a line
                 }
+                System.out.println();
             }
-
-
-//            myUmlDao.
-//            for () {
-//                for () {
-//
-//                }
-//            }
-
-//            List<List<Object>> Classes = myUmlDao.queryTableClasses();
-//            for (List currentClass : Classes) {
-//                int classId = (int) currentClass.get(0);
-//                List<FieldModel> currentFields = myUmlDao.queryClassFields(classId);
-//                List<MethodModel> currentMethods = myUmlDao.queryClassMethods(classId);
-//            }
 
         } catch (SQLException e) {
             System.out.println("Something went wrong with the connection. " + e.getMessage());
         }
-
     }
 }

@@ -11,9 +11,7 @@ public class RelationsModel extends DrawUMLProjectModel {
         this.childClass = childClass;
     }
 
-    public ClassModel getParentClass() {
-        return parentClass;
-    }
+    public ClassModel getParentClass() { return parentClass; }
 
     public void setParentClass(ClassModel parentClass) {
         this.parentClass = parentClass;

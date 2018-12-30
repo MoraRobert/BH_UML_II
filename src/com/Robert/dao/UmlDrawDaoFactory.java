@@ -1,6 +1,5 @@
 package com.Robert.dao;
 
-import com.Robert.dao.UmlDrawDao;
 import com.Robert.dao.impl.UmlDrawDaoImpl;
 import java.sql.Connection;
 

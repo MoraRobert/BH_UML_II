@@ -1,7 +1,5 @@
 package com.Robert.model;
 
-import com.Robert.model.ClassModel;
-
 public class FieldModel extends DrawUMLProjectModel{
 
     private int id;
